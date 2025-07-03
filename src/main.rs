@@ -1,7 +1,10 @@
 #![allow(static_mut_refs)]
 
+use std::process::exit;
+
 use macroquad::prelude::*;
 use macroquad::input::*;
+use macroquad::rand::gen_range;
 mod world;
 use world::*;
 pub mod settings;
@@ -15,21 +18,13 @@ async fn main() {
     window.window_resizable = false;
     let mut world = World::new();
 
-    /*
-    world.pixels.push(Pixel::new(world::Element::default(), 400.0, 0.0));
-    world.pixels.push(Pixel::new(world::Element::default(), 430.0, 45.0));
-    world.pixels.push(Pixel::new(world::Element::default(), 254.0, 20.0));
-    world.pixels.push(Pixel::new(world::Element::default(), 400.0, 90.0));
-    world.pixels.push(Pixel::new(world::Element::default(), 300.0, 23.0));
-    world.pixels.push(Pixel::new(world::Element::default(), 630.0, 73.0));
-    world.pixels.push(Pixel::new(world::Element::default(), 754.0, 57.0));
-    world.pixels.push(Pixel::new(world::Element::default(), 500.0, 47.0));
-    */
-
     let mut pause_state = false;
 
     loop {
-        //clear_background(BLACK);
+        if macroquad::input::is_key_pressed(KeyCode::Q) {
+            exit(1);
+        }
+
         if macroquad::input::is_mouse_button_down(MouseButton::Left) {
             let (pos_x, pos_y) = macroquad::input::mouse_position();
             world.pixels.push(Pixel::new(world::Element::default(), pos_x, pos_y));
@@ -40,10 +35,9 @@ async fn main() {
             world.pixels.push(Pixel::new(
                 world::Element::new(
                     "Fire".to_string(),
-                    macroquad::color::Color::new(1.0,0.3,0.0,1.0),
-                    u64::MAX,
-                    -0.25,
-                    0.0,
+                    macroquad::color::Color::new(gen_range(0.8, 1.0),gen_range(0.0, 0.5),0.0,1.0),
+                    100,
+                    -0.2,
                     10.0
                 ),
                 pos_x,
@@ -64,6 +58,9 @@ async fn main() {
 
         if !pause_state {
             world.update();
+            unsafe { draw_text(&format!("Particles: {}", PIXEL_AMOUNT) as &str, 10.0, 10.0, 16.0, WHITE); }
+            draw_text("Press [q] to exit", SCREEN_WIDTH-125.0, 10.0, 16.0, WHITE);
+            request_new_screen_size(SCREEN_WIDTH, SCREEN_HEIGHT);
             next_frame().await
         }
     }
