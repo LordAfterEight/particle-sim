@@ -39,7 +39,7 @@ async fn main() {
                 let (pos_x, pos_y) = macroquad::input::mouse_position();
 
                 elements.fire.color = macroquad::color::Color::new(gen_range(0.9,1.0),gen_range(0.3,0.6),0.0,1.0);
-                elements.fire.lifetime = gen_range(20, 50);
+                elements.fire.lifetime = gen_range(30, 50);
 
                 elements.smoke.color = macroquad::color::Color::new(gen_range(0.0,0.2),gen_range(0.01,0.2),gen_range(0.01,0.2),1.0);
                 elements.smoke.lifetime = gen_range(60, 90);

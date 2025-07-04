@@ -13,7 +13,7 @@ impl Elements {
         let smoke = Element::new(
             "Smoke".to_string(),
             macroquad::color::Color::new(0.2,0.2,0.2,1.0),
-            10,
+            20,
             -0.01,
             5.0,
             80.0,
