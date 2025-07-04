@@ -2,12 +2,13 @@
 
 use std::process::exit;
 
+use data::elements;
 use macroquad::prelude::*;
-use macroquad::input::*;
 use macroquad::rand::gen_range;
 mod world;
 use world::*;
 pub mod settings;
+pub mod data;
 use crate::settings::values::*;
 
 
@@ -17,6 +18,7 @@ async fn main() {
     let mut world = World::new();
 
     let mut pause_state = false;
+    let mut elements = elements::Elements::init();
 
     loop {
         if macroquad::input::is_key_pressed(KeyCode::Q) {
@@ -30,20 +32,20 @@ async fn main() {
         if pos_x < SCREEN_WIDTH {
 
             if macroquad::input::is_mouse_button_down(MouseButton::Left) {
-                world.pixels.push(Pixel::new(world::Element::default(), pos_x, pos_y));
+                world.pixels.push(Pixel::new(&elements.sand, pos_x, pos_y));
             }
 
             if macroquad::input::is_mouse_button_down(MouseButton::Right) {
                 let (pos_x, pos_y) = macroquad::input::mouse_position();
+
+                elements.fire.color = macroquad::color::Color::new(gen_range(0.9,1.0),gen_range(0.3,0.6),0.0,1.0);
+                elements.fire.lifetime = gen_range(20, 50);
+
+                elements.smoke.color = macroquad::color::Color::new(gen_range(0.0,0.2),gen_range(0.01,0.2),gen_range(0.01,0.2),1.0);
+                elements.smoke.lifetime = gen_range(60, 90);
+
                 world.pixels.push(Pixel::new(
-                    world::Element::new(
-                        "Fire".to_string(),
-                        macroquad::color::Color::new(gen_range(0.8, 1.0),gen_range(0.0, 0.5),0.0,1.0),
-                        100,
-                        -0.15,
-                        10.0,
-                        800.0
-                    ),
+                    &elements.fire,
                     pos_x,
                     pos_y)
                 );
@@ -52,14 +54,7 @@ async fn main() {
             if macroquad::input::is_mouse_button_down(MouseButton::Middle) {
                 let (pos_x, pos_y) = macroquad::input::mouse_position();
                 world.pixels.push(Pixel::new(
-                    world::Element::new(
-                        "Metal".to_string(),
-                        macroquad::color::Color::new(0.3,0.3,gen_range(0.3,0.4),1.0),
-                        u16::MAX,
-                        0.0,
-                        0.0,
-                        22.0
-                    ),
+                    &elements.metal,
                     pos_x,
                     pos_y)
                 );
