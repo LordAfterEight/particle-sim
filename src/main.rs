@@ -14,8 +14,6 @@ use crate::settings::values::*;
 #[macroquad::main("Rusty Pixels")]
 async fn main() {
     request_new_screen_size(SCREEN_WIDTH, SCREEN_HEIGHT);
-    let mut window = macroquad::window::Conf::default();
-    window.window_resizable = false;
     let mut world = World::new();
 
     let mut pause_state = false;
@@ -25,24 +23,47 @@ async fn main() {
             exit(1);
         }
 
-        if macroquad::input::is_mouse_button_down(MouseButton::Left) {
-            let (pos_x, pos_y) = macroquad::input::mouse_position();
-            world.pixels.push(Pixel::new(world::Element::default(), pos_x, pos_y));
-        }
+        // Get mouse position
+        let (pos_x, pos_y) = macroquad::input::mouse_position();
 
-        if macroquad::input::is_mouse_button_down(MouseButton::Right) {
-            let (pos_x, pos_y) = macroquad::input::mouse_position();
-            world.pixels.push(Pixel::new(
-                world::Element::new(
-                    "Fire".to_string(),
-                    macroquad::color::Color::new(gen_range(0.8, 1.0),gen_range(0.0, 0.5),0.0,1.0),
-                    100,
-                    -0.2,
-                    10.0
-                ),
-                pos_x,
-                pos_y)
-            );
+        // Create and draw the pixels
+        if pos_x < SCREEN_WIDTH {
+
+            if macroquad::input::is_mouse_button_down(MouseButton::Left) {
+                world.pixels.push(Pixel::new(world::Element::default(), pos_x, pos_y));
+            }
+
+            if macroquad::input::is_mouse_button_down(MouseButton::Right) {
+                let (pos_x, pos_y) = macroquad::input::mouse_position();
+                world.pixels.push(Pixel::new(
+                    world::Element::new(
+                        "Fire".to_string(),
+                        macroquad::color::Color::new(gen_range(0.8, 1.0),gen_range(0.0, 0.5),0.0,1.0),
+                        100,
+                        -0.15,
+                        10.0,
+                        800.0
+                    ),
+                    pos_x,
+                    pos_y)
+                );
+            }
+
+            if macroquad::input::is_mouse_button_down(MouseButton::Middle) {
+                let (pos_x, pos_y) = macroquad::input::mouse_position();
+                world.pixels.push(Pixel::new(
+                    world::Element::new(
+                        "Metal".to_string(),
+                        macroquad::color::Color::new(0.3,0.3,gen_range(0.3,0.4),1.0),
+                        u16::MAX,
+                        0.0,
+                        0.0,
+                        22.0
+                    ),
+                    pos_x,
+                    pos_y)
+                );
+            }
         }
 
         if macroquad::input::is_key_pressed(KeyCode::Space) {
