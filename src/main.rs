@@ -49,6 +49,21 @@ async fn main() {
                     pos_x,
                     pos_y)
                 );
+                world.pixels.push(Pixel::new(
+                    &elements.fire,
+                    pos_x,
+                    pos_y)
+                );
+                world.pixels.push(Pixel::new(
+                    &elements.fire,
+                    pos_x,
+                    pos_y)
+                );
+                world.pixels.push(Pixel::new(
+                    &elements.fire,
+                    pos_x,
+                    pos_y)
+                );
             }
 
             if macroquad::input::is_mouse_button_down(MouseButton::Middle) {

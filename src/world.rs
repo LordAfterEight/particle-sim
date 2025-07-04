@@ -1,7 +1,9 @@
+use macroquad::rand::gen_range;
+
 use crate::settings::values::*;
 
 
-pub static mut FRAME: [[bool;SCREEN_HEIGHT as usize + 10];SCREEN_WIDTH as usize + 10] = [[true;SCREEN_HEIGHT as usize + 10]; SCREEN_WIDTH as usize + 10];
+pub static mut FRAME: [[bool;SCREEN_HEIGHT as usize + 30];SCREEN_WIDTH as usize + 30] = [[true;SCREEN_HEIGHT as usize + 30]; SCREEN_WIDTH as usize + 30];
 
 #[derive(Clone)]
 pub struct Element {
@@ -75,7 +77,7 @@ impl Pixel {
                 PIXEL_AMOUNT += 1;
                 Self {
                     x: pos_x,
-                    x_velocity: 0.0,
+                    x_velocity: gen_range(-1.0,1.0),
                     y: pos_y,
                     y_velocity: 0.0,
                     element: element.clone(),
@@ -120,21 +122,24 @@ impl Pixel {
                     PIXEL_AMOUNT
                 );
 
-                self.x += self.x_velocity;
+                self.x += self.x_velocity * SCALING;
 
+                if self.x_velocity < 0.0 { self.x_velocity += 0.1 }
+                if self.x_velocity > 0.0 { self.x_velocity -= 0.1 }
 
                 if self.y < SCREEN_HEIGHT - SCALING {
 
                     if (self.y + self.y_velocity * SCALING) > SCREEN_HEIGHT {
                         self.y = SCREEN_HEIGHT - SCALING;
-                    } else { self.y += self.y_velocity * SCALING; }
+                        self.x_velocity = 0.0;
+                    } else { self.y += (self.y_velocity * SCALING) * (gen_range(0.8, 1.2)); }
 
                 } else { self.y = SCREEN_HEIGHT - SCALING }
 
                 if self.element.lifetime == 15 {
                     self.element = elements.smoke;
                 }
-                
+
                 if self.element.lifetime == 0 {
                     self.to_be_removed = true;
                 }
