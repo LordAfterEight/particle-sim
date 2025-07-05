@@ -98,8 +98,11 @@ impl Pixel {
 
     pub fn update(&mut self) {
         unsafe {
-            let elements = crate::elements::Elements::init();
+            let mut elements = crate::elements::Elements::init();
             FRAME[self.x as usize][self.y as usize] = true;
+
+            elements.smoke.color = macroquad::color::Color::new(gen_range(0.1,0.2),gen_range(0.1,0.2),gen_range(0.1,0.2),1.0);
+            elements.smoke.lifetime = gen_range(10, 30);
 
             if FRAME[self.x as usize][(self.y + SCALING) as usize] {
                 macroquad::prelude::draw_rectangle(self.x, self.y, SCALING, SCALING, self.element.color);
@@ -108,9 +111,6 @@ impl Pixel {
                     self.element.lifetime -= 1;
                 }
 
-                if self.y < 0.0 - SCALING {
-                    self.to_be_removed = true;
-                }
 
                 self.y_velocity += self.element.weight;
 
@@ -140,7 +140,7 @@ impl Pixel {
                     self.element = elements.smoke;
                 }
 
-                if self.element.lifetime == 0 {
+                if self.y < 0.0 || self.element.lifetime < 0 {
                     self.to_be_removed = true;
                 }
             }
