@@ -129,7 +129,7 @@ impl Pixel {
 
                 if self.y < SCREEN_HEIGHT - SCALING {
 
-                    if (self.y + self.y_velocity * SCALING) > SCREEN_HEIGHT {
+                    if (self.y + self.y_velocity * SCALING) >= SCREEN_HEIGHT {
                         self.y = SCREEN_HEIGHT - SCALING;
                         self.x_velocity = 0.0;
                     } else { self.y += (self.y_velocity * SCALING) * (gen_range(0.8, 1.2)); }

@@ -33,6 +33,8 @@ async fn main() {
 
             if macroquad::input::is_mouse_button_down(MouseButton::Left) {
                 world.pixels.push(Pixel::new(&elements.sand, pos_x, pos_y));
+                world.pixels.push(Pixel::new(&elements.sand, pos_x, pos_y));
+                world.pixels.push(Pixel::new(&elements.sand, pos_x, pos_y));
             }
 
             if macroquad::input::is_mouse_button_down(MouseButton::Right) {
