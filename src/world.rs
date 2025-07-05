@@ -124,8 +124,7 @@ impl Pixel {
 
                 self.x += self.x_velocity * SCALING;
 
-                if self.x_velocity < 0.0 { self.x_velocity += 0.1 }
-                if self.x_velocity > 0.0 { self.x_velocity -= 0.1 }
+                self.x_velocity *= 0.9;
 
                 if self.y < SCREEN_HEIGHT - SCALING {
 
